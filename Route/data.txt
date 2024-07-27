@@ -1,0 +1,9 @@
+
+==Route Instance
+const router = express.Router();
+
+replace your express instance to route instance
+
+
+now we implements rourtes instance to server instance using use method
+app.use('/api',router)
