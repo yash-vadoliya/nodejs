@@ -1,0 +1,19 @@
+const express = require('express');
+
+const router = express.Router();
+
+const Student_controller = require("./../Controller/student_controller");
+
+const product_validation = require("../Validataion/student_validtaion.js");
+
+router.get('/student', Student_controller.index);
+
+router.get('/student/:id', Student_controller.show);
+
+router.post('/student', Student_controller.store);
+
+router.put('/student', Student_controller.update);
+
+router.delete('/student/:id', Student_controller.destroy);
+
+module.exports = router;
