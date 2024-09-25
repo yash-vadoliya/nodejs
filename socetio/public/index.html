@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myapp</title>
+</head>
+
+<body>
+    <input type="text" name="" id="input" autocomplete="off" placeholder="Enter Message">
+    <ul id="messege"></ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io()
+        const input = document.getElementById("input");
+        const message = document.getElementById("message");
+
+        input.addEventListener("keypress", function(event) {
+            if (event.key == 'Enter') {
+                socket.emit('message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('message', function(msg) {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            message.appendChild(item);
+        });
+    </script>
+
+</body>
+
+</html>
