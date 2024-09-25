@@ -4,32 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Myapp</title>
+    <title>My App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        #messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 10px;
+            background-color: #fff;
+        }
+    </style>
 </head>
 
-<body>
-    <input type="text" name="" id="input" autocomplete="off" placeholder="Enter Message">
-    <ul id="messege"></ul>
+<body class="container mt-5">
+    <h1 class="text-center">Chat Application</h1>
+    <div id="messages" class="mb-3"></div>
+    <input type="text" id="input" class="form-control" autocomplete="off" placeholder="Enter Message">
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io()
+        const socket = io();
         const input = document.getElementById("input");
-        const message = document.getElementById("message");
+        const messages = document.getElementById("messages");
 
         input.addEventListener("keypress", function(event) {
-            if (event.key == 'Enter') {
-                socket.emit('message', input.value);
-                input.value = '';
+            if (event.key === 'Enter') {
+                const message = input.value.trim();
+                if (message) {
+                    socket.emit('message', message);
+                    input.value = '';
+                }
             }
         });
 
         socket.on('message', function(msg) {
-            const item = document.createElement('li');
+            const item = document.createElement('div');
             item.textContent = msg;
-            message.appendChild(item);
+            item.classList.add('alert', 'alert-primary', 'mb-2');
+            messages.appendChild(item);
+            messages.scrollTop = messages.scrollHeight; // Scroll to the bottom
         });
     </script>
-
 </body>
 
 </html>
