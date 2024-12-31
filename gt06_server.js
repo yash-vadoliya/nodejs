@@ -22,8 +22,18 @@ const server = net.createServer((socket) => {
     console.log('Device Connected:', socket.remoteAddress, socket.remotePort);
 
     socket.on('data', (data) => {
-        console.log(`Received ${socket.remoteAddress} Data:`, data.toString());
-        socket.write(`Server Response:${data}`);
+        data = data.toString();
+        const fields  = ["Header","Unit ID/IMEI","Message ID","Transmission Reason","Command Key",
+                        "Command Key Value","Ignition","Power Cut","Status Flags","Mains Voltage","Odometer","Speed","Satellite in View","GPS Data Validity","Latitude","Longitude","Altitude","Direction","Time","Date","Signal Strength","GSM Status","Error Code / Miscellaneous Field","Server Status","Internal Battery","Analog Input","Digital Input Status","Aux Field 1","Aux Field 2","Aux Field 3","Aux Field 4","Hardware Version","Software Version","Packet Type","End Delimiter"];
+        const Value_data = data.split(',');
+
+        const tcp_data = {};
+
+        fields.forEach((fields, index) => {
+            tcp_data[fields] = Value_data[index] || null;
+        });
+
+        console.log(`Recive Data : ${socket.remoteAddress}`,tcp_data);
     });
 
     socket.on('end', () => {
@@ -39,10 +49,3 @@ const server = net.createServer((socket) => {
 server.listen(PORT, HOST, () => {
     console.log(`GT06 Server is running on ${HOST}:${PORT}`);
 });
-
-
-// Run This Code 
-// Open Powershell/Cmd And Type A Command
-// node gt06_serever.js
-// Open Another Powershell/Cmd And Type A Command
-// telnet <serverIP> Port
